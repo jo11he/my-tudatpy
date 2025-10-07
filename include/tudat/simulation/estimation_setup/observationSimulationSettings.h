@@ -274,8 +274,6 @@ public:
         simulationTimes_ = newSimulationTimes;
     }
 
-}
-
     // std::shared_ptr< observation_models::ObservationAncilliarySimulationSettings > ancilliarySettings
 
     //! List of times at which to perform the observation simulation
