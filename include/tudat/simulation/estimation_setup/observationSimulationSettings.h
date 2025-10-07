@@ -264,14 +264,19 @@ public:
     //! Destructor
     ~TabulatedObservationSimulationSettings( ) { }
 
-
+    // getter simulation times
     std::vector< TimeType > getSimulationTimes( ){
         return simulationTimes_;
     }
 
+    // setter simulation times
     void setSimulationTimes( std::vector< TimeType > newSimulationTimes ){
         simulationTimes_ = newSimulationTimes;
     }
+
+}
+
+    // std::shared_ptr< observation_models::ObservationAncilliarySimulationSettings > ancilliarySettings
 
     //! List of times at which to perform the observation simulation
     std::vector< TimeType > simulationTimes_;
