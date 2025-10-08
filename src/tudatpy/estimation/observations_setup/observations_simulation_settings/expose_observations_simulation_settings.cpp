@@ -53,10 +53,16 @@ void expose_observations_simulation_settings( py::module& m )
          Function providing the observation noise as a function of observation time (can be constant or time-dependent), default is None.
       )doc" )
             .def_property_readonly( "ancillary_settings",
-            &tss::ObservationSimulationSettings< TIME_TYPE >::getAncilliarySettings,
+                &tss::ObservationSimulationSettings< TIME_TYPE >::getAncilliarySettings,
                 R"doc(
                  Read-only property ObservationAncilliarySimulationSettings in ObservationSimulationSettings object.
-              )doc" );
+              )doc" )
+
+            .def_property_readonly( "link_ends",
+                &tss::ObservationSimulationSettings< TIME_TYPE >::getLinkEnds,
+                R"doc(
+                 Read-only property LinkEnds in ObservationSimulationSettings object.
+               )doc" );
 
 
 
