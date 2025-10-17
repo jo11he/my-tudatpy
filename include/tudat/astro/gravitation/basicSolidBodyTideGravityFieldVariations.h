@@ -64,8 +64,8 @@ std::complex< double > calculateSolidBodyTideSingleCoefficientSetCorrectionFromA
 
 // Handle default values of mean tidal forcing terms when calculateSolidBodyTideSingleCoefficientSetCorrectionFromAmplitude function is called with love numbers as map
     // this call is only happening in unit tests (as far as I can tell) and the aux function below is thus also only called in unit test application
-void massageMeanTermsIfDefault( std::map< int, std::vector< double > >& input,
-                                const std::map< int, std::vector< std::complex< double > > >& loveNumbersReference);
+std::map<int, std::vector<double>> generateZeroMeanTermsFromReference(
+    const std::map<int, std::vector<std::complex<double>>>& loveNumbersReference);
 
 
 // This function takes the map of kind key=degree, vector = values at degree, order and maps it onto a nxn matrix
@@ -124,8 +124,8 @@ std::pair< Eigen::MatrixXd, Eigen::MatrixXd > calculateSolidBodyTideSingleCoeffi
         const Eigen::Vector3d& relativeBodyFixedPosition,
         const int maximumDegree,
         const int maximumOrder,
-        std::map< int, std::vector< double > > meanCosineForcing = { {0, {0.0}} },
-        std::map< int, std::vector< double > > meanSineForcing = { {0, {0.0}} });
+        std::map< int, std::vector< double > > meanCosineForcing = { },
+        std::map< int, std::vector< double > > meanSineForcing = { });
 
 class SolidBodyTideGravityFieldVariations : public GravityFieldVariations
 {
@@ -512,21 +512,24 @@ public:
                                                   std::placeholders::_1,
                                                   std::placeholders::_2 ) );
 
-        // if cosine mean forcing terms are empty map (default), set map values to zero
-        if (meanForcingCosineTerms.empty()){
-            for (const auto& [key, vec] : loveNumbers_) {
-                // Create a vector<double> of the same size, all zero-initialized
-                meanForcingCosineTerms_[key] = std::vector<double>(vec.size(), 0.0);
-            }
+      // If cosine mean forcing terms are empty map (default), set map values to zero
+      if (meanForcingCosineTerms_.empty()) {
+        for (const auto& kv : loveNumbers_) {
+          const int key = kv.first;
+          const std::size_t size = kv.second.size();
+          meanForcingCosineTerms_[key] = std::vector<double>(size, 0.0);
         }
+      }
 
-        // if sine mean forcing terms are empty map (default), set map values to zero
-        if (meanForcingSineTerms.empty()){
-            for (const auto& [key, vec] : loveNumbers_) {
-                // Create a vector<double> of the same size, all zero-initialized
-                meanForcingSineTerms_[key] = std::vector<double>(vec.size(), 0.0);
-            }
+      // If sine mean forcing terms are empty map (default), set map values to zero
+      if (meanForcingSineTerms_.empty()) {
+        for (const auto& kv : loveNumbers_) {
+          const int key = kv.first;
+          const std::size_t size = kv.second.size();
+          meanForcingSineTerms_[key] = std::vector<double>(size, 0.0);
         }
+      }
+
 
     }
 
