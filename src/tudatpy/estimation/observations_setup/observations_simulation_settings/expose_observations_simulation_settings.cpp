@@ -364,7 +364,7 @@ void expose_observations_simulation_settings( py::module& m )
            py::arg( "bodies" ),
            R"doc(No documentation found.)doc" );
 
-           m.def( "change_simulation_settings_observable_types",
+    m.def( "change_simulation_settings_observable_types",
            &tom::changeObservableTypesOfObservationSimulationSettings< STATE_SCALAR_TYPE, TIME_TYPE >,
            py::arg( "observation_simulation_settings" ),
            py::arg( "replacement_observable_types" ) =
@@ -428,6 +428,16 @@ void expose_observations_simulation_settings( py::module& m )
 
 
      )doc" );
+
+
+    m.def( "reset_noise_seed",
+        &tss::resetNoiseSeed,
+        py::arg("new_noise_seed"),
+        R"doc(
+
+            Function for manually setting the random seed on which observation noise simulations are based.
+
+        )doc" );
 
 }
 

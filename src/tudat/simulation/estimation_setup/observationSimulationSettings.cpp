@@ -15,6 +15,11 @@ int getDefaultNoiseSeed( )
     return seedToUse;
 }
 
+void resetNoiseSeed( const int newNoiseSeed )
+{
+    noiseSeed = newNoiseSeed;
+}
+
 std::function< Eigen::VectorXd( const double ) > getNoiseFunctionForObservable(
         const std::function< double( const double ) > singleNoiseFunction,
         const observation_models::ObservableType observableType )
