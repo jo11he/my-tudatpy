@@ -1895,7 +1895,7 @@ BOOST_AUTO_TEST_CASE( testRTGPartials )
             rtgAccelerationModel, std::make_pair( "Vehicle", vehicle ), std::make_pair( "Vehicle", vehicle ), bodies );
 
     // Make acceleration models input to list, which is normally handled by parameter settings
-    std::vector<std::shared_ptr<system_models::RTGAccelerationModel>> rtgAccelerationModelsList = { rtgAccelerationModel };
+    std::vector< std::shared_ptr< system_models::RTGAccelerationModel > > rtgAccelerationModelsList = { rtgAccelerationModel };
 
     // Create force vector parameter object.
     std::shared_ptr< EstimatableParameter< Eigen::VectorXd > > rtgForceVectorParameter =

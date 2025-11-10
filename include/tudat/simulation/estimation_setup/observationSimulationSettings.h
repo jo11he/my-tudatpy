@@ -277,7 +277,6 @@ public:
         simulationTimes_ = newSimulationTimes;
     }
 
-
     //! List of times at which to perform the observation simulation
     std::vector< TimeType > simulationTimes_;
 };

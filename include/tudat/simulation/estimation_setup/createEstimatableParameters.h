@@ -1382,49 +1382,44 @@ std::shared_ptr< estimatable_parameters::EstimatableParameter< double > > create
                 break;
             }
 
-          case rtg_force_vector_magnitude: {
-            if( propagatorSettings == nullptr )
-            {
-              throw std::runtime_error(
-                      "Error when creating rtg_force_vector_magnitude parameter, no propagatorSettings provided." );
-            }
-
-            std::vector< std::shared_ptr< basic_astrodynamics::AccelerationModel3d > > associatedAccelerationModels =
-                    getAccelerationModelsListForParametersFromBase< InitialStateParameterType, TimeType >( propagatorSettings,
-                                                                                                           doubleParameterName );
-
-            if (associatedAccelerationModels.size( )==0)
-            {
-                throw std::runtime_error(
-                "Error when trying to make rtg force vector parameter, no acceleration model found. ");
-            }
-
-            // Create parameter object
-            std::vector < std::shared_ptr< system_models::RTGAccelerationModel > > listOfRTGAccelerationModels;
-            for (const auto& model : associatedAccelerationModels)
-            {
-                std::shared_ptr< system_models::RTGAccelerationModel > rtgAccelerationModel =
-                     std::dynamic_pointer_cast< system_models::RTGAccelerationModel > (associatedAccelerationModels.at(0));
-
-                if (rtgAccelerationModel == nullptr)
+            case rtg_force_vector_magnitude: {
+                if( propagatorSettings == nullptr )
                 {
-                    throw std::runtime_error(
-                            "Error, expected RTGAccelerationModel when creating rtg_force_vector parameter" );
-                }
-                else
-                {
-                    listOfRTGAccelerationModels.push_back(rtgAccelerationModel);
+                    throw std::runtime_error( "Error when creating rtg_force_vector_magnitude parameter, no propagatorSettings provided." );
                 }
 
+                std::vector< std::shared_ptr< basic_astrodynamics::AccelerationModel3d > > associatedAccelerationModels =
+                        getAccelerationModelsListForParametersFromBase< InitialStateParameterType, TimeType >( propagatorSettings,
+                                                                                                               doubleParameterName );
+
+                if( associatedAccelerationModels.size( ) == 0 )
+                {
+                    throw std::runtime_error( "Error when trying to make rtg force vector parameter, no acceleration model found. " );
+                }
+
+                // Create parameter object
+                std::vector< std::shared_ptr< system_models::RTGAccelerationModel > > listOfRTGAccelerationModels;
+                for( const auto& model : associatedAccelerationModels )
+                {
+                    std::shared_ptr< system_models::RTGAccelerationModel > rtgAccelerationModel =
+                            std::dynamic_pointer_cast< system_models::RTGAccelerationModel >( associatedAccelerationModels.at( 0 ) );
+
+                    if( rtgAccelerationModel == nullptr )
+                    {
+                        throw std::runtime_error( "Error, expected RTGAccelerationModel when creating rtg_force_vector parameter" );
+                    }
+                    else
+                    {
+                        listOfRTGAccelerationModels.push_back( rtgAccelerationModel );
+                    }
+                }
+
+                // Create rtg force vector magnitude parameter
+                doubleParameterToEstimate = std::make_shared< RTGForceVectorMagnitude >( listOfRTGAccelerationModels,
+                                                                                         doubleParameterName->parameterType_.second.first );
+
+                break;
             }
-
-            // Create rtg force vector magnitude parameter
-            doubleParameterToEstimate = std::make_shared< RTGForceVectorMagnitude >(
-                    listOfRTGAccelerationModels,
-                    doubleParameterName->parameterType_.second.first);
-
-            break;
-          }
 
             case constant_specific_impulse: {
                 if( currentBody->getVehicleSystems( ) == nullptr )
@@ -2081,57 +2076,44 @@ std::shared_ptr< estimatable_parameters::EstimatableParameter< Eigen::VectorXd >
                 }
                 break;
             }
-
-          case rtg_force_vector: {
-            if( propagatorSettings == nullptr )
-            {
-              throw std::runtime_error(
-                      "Error when creating rtg_force_vector parameter, no propagatorSettings provided." );
-            }
-
-            std::vector< std::shared_ptr< basic_astrodynamics::AccelerationModel3d > > associatedAccelerationModels =
-                    getAccelerationModelsListForParametersFromBase< InitialStateParameterType, TimeType >( propagatorSettings,
-                                                                                                           vectorParameterName );
-
-            if (associatedAccelerationModels.empty())
-            {
-              throw std::runtime_error(
-              "Error when trying to make rtg force vector parameter, no acceleration model found. ");
-            }
-            // This case is now accomodated in rtg force parameter setup
-            // *
-            // else if (associatedAccelerationModels.size( )>1)
-            // {
-            // throw std::runtime_error(
-            // "Error when trying to make rtg force vector parameter, more than one acceleration model found. ");
-            // }
-
-            // Create parameter object
-            std::vector < std::shared_ptr< system_models::RTGAccelerationModel > > listOfRTGAccelerationModels;
-            for (const auto& model : associatedAccelerationModels)
-            {
-                std::shared_ptr< system_models::RTGAccelerationModel > rtgAccelerationModel =
-                     std::dynamic_pointer_cast< system_models::RTGAccelerationModel > (associatedAccelerationModels.at(0));
-
-                if (rtgAccelerationModel == nullptr)
+            case rtg_force_vector: {
+                if( propagatorSettings == nullptr )
                 {
-                    throw std::runtime_error(
-                            "Error, expected RTGAccelerationModel when creating rtg_force_vector parameter" );
-                }
-                else
-                {
-                    listOfRTGAccelerationModels.push_back(rtgAccelerationModel);
+                    throw std::runtime_error( "Error when creating rtg_force_vector parameter, no propagatorSettings provided." );
                 }
 
+                std::vector< std::shared_ptr< basic_astrodynamics::AccelerationModel3d > > associatedAccelerationModels =
+                        getAccelerationModelsListForParametersFromBase< InitialStateParameterType, TimeType >( propagatorSettings,
+                                                                                                               vectorParameterName );
+
+                if( associatedAccelerationModels.size( ) == 0 )
+                {
+                    throw std::runtime_error( "Error when trying to make rtg force vector parameter, no acceleration model found. " );
+                }
+
+                // Create parameter object
+                std::vector< std::shared_ptr< system_models::RTGAccelerationModel > > listOfRTGAccelerationModels;
+                for( const auto& model : associatedAccelerationModels )
+                {
+                    std::shared_ptr< system_models::RTGAccelerationModel > rtgAccelerationModel =
+                            std::dynamic_pointer_cast< system_models::RTGAccelerationModel >( associatedAccelerationModels.at( 0 ) );
+
+                    if( rtgAccelerationModel == nullptr )
+                    {
+                        throw std::runtime_error( "Error, expected RTGAccelerationModel when creating rtg_force_vector parameter" );
+                    }
+                    else
+                    {
+                        listOfRTGAccelerationModels.push_back( rtgAccelerationModel );
+                    }
+                }
+
+                // Create rtg force vector parameter
+                vectorParameterToEstimate =
+                        std::make_shared< RTGForceVector >( listOfRTGAccelerationModels, vectorParameterName->parameterType_.second.first );
+
+                break;
             }
-
-            // Create rtg force vector parameter
-            vectorParameterToEstimate = std::make_shared< RTGForceVector >(
-                    listOfRTGAccelerationModels,
-                    vectorParameterName->parameterType_.second.first);
-
-            break;
-          }
 
             case arc_wise_radiation_pressure_coefficient: {
                 // Check input consistency
