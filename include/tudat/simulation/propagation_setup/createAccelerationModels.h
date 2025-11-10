@@ -232,9 +232,9 @@ std::shared_ptr< gravitation::RingGravitationalAccelerationModel > createRingGra
         const bool useCentralBodyFixedFrame );
 
 
-//! Function to create ring gravity acceleration model.
+//! Function to create rtg acceleration model.
 /*!
- *  Function to create ring gravity acceleration model from bodies exerting and
+ *  Function to create rtg acceleration model from bodies exerting and
  *  undergoing acceleration.
  *  \param bodyUndergoingAcceleration Pointer to object of body that is being accelerated.
  *  \param bodyExertingAcceleration Pointer to object of body that is exerting the RTG acceleration (same as undergoing).
