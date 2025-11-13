@@ -611,8 +611,8 @@ std::vector< std::shared_ptr< estimatable_parameters::EstimatableParameterSettin
 
         if( arcStartTimes.size( ) != 0 )
         {
-            if( std::fabs( arcStartTimes.at( i ) - arcStartTimesToUse.at( i ) ) > std::fabs (
-                10.0 * std::numeric_limits< double >::epsilon( ) * arcStartTimesToUse.at( i )) )
+            if( std::fabs( arcStartTimes.at( i ) - arcStartTimesToUse.at( i ) ) >
+                std::fabs( 10.0 * std::numeric_limits< double >::epsilon( ) * arcStartTimesToUse.at( i ) ) )
             {
                 throw std::runtime_error(
                         "Error when making multi-arc initial state parameter, times do not match: do not provide times manually" );
@@ -2756,16 +2756,16 @@ std::shared_ptr< estimatable_parameters::EstimatableParameter< Eigen::VectorXd >
                 std::string errorMessage = "Warning, this vector parameter (" +
                         std::to_string( vectorParameterName->parameterType_.first ) +
                         ") has not yet been implemented when making parameters";
-            throw std::runtime_error( errorMessage );
-            }
+                throw std::runtime_error( errorMessage );
         }
+    }
 
-        if( vectorParameterName->customPartialSettings_.size( ) != 0 )
-        {
-            vectorParameterToEstimate->setCustomPartialSettings( vectorParameterName->customPartialSettings_ );
-        }
+    if( vectorParameterName->customPartialSettings_.size( ) != 0 )
+    {
+        vectorParameterToEstimate->setCustomPartialSettings( vectorParameterName->customPartialSettings_ );
+    }
 
-        return vectorParameterToEstimate;
+    return vectorParameterToEstimate;
 }
 
 //! Function checking whether the direct tidal parameters to be estimated are not incompatible
