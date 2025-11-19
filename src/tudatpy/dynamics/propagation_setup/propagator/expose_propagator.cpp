@@ -733,7 +733,18 @@ Enumeration of available integrated state types.
 
             :type: list[SingleArcPropagatorSettings]
 
-)doc" );
+)doc" )
+
+    .def( "reset_initial_states_list",
+        &tp::MultiArcPropagatorSettings< STATE_SCALAR_TYPE, TIME_TYPE >::resetInitialStatesList,
+        py::arg( "new_initial_states_list" ),
+        R"doc(
+
+                Manually set initial states per arc (e.g. entry j of this list is the initial state for arc j) - not recommended!.
+
+                :type: list[np.array]
+
+    )doc" );
 
 
 
