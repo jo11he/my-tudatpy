@@ -69,6 +69,10 @@ void expose_rotation_model_setup( py::module& m )
                     tss::RotationModelType::planetary_rotation_model,
                     R"doc(
       )doc" )
+            .value( "iau_defined_rotation_model",
+                tss::RotationModelType::iau_rotation_model,
+                R"doc(
+              )doc" )
             .export_values( );
 
     py::enum_< tba::IAUConventions >( m,
@@ -78,9 +82,6 @@ void expose_rotation_model_setup( py::module& m )
          Enumeration of IAU conventions for Earth rotation.
 
          Enumeration of IAU conventions for Earth rotation supported by tudat.
-
-
-
 
 
       )doc" )
