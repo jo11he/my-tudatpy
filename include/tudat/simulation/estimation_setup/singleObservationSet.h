@@ -47,16 +47,13 @@ public:
                           const std::vector< Eigen::VectorXd >& observationsDependentVariables = std::vector< Eigen::VectorXd >( ),
                           const std::shared_ptr< ObservationDependentVariableBookkeeping > dependentVariableBookkeeping = nullptr,
                           const std::shared_ptr< observation_models::ObservationAncillarySimulationSettings > ancillarySettings = nullptr,
-                          const bool eraseDuplicates = false,
                           const std::vector< Eigen::Matrix< double, Eigen::Dynamic, 1 > >& weights = { },
-                          const std::vector< Eigen::Matrix< ObservationScalarType, Eigen::Dynamic, 1 > >& residuals = { }):
+                          const std::vector< Eigen::Matrix< ObservationScalarType, Eigen::Dynamic, 1 > >& residuals = { } ):
         observableType_( observableType ), linkEnds_( linkEnds ), observations_( observations ), observationTimes_( observationTimes ),
         referenceLinkEnd_( referenceLinkEnd ), observationsDependentVariables_( observationsDependentVariables ),
         dependentVariableBookkeeping_( dependentVariableBookkeeping ), ancillarySettings_( ancillarySettings ),
         numberOfObservations_( observations_.size( ) ), weights_( weights ), residuals_( residuals )
     {
-
-
         if( dependentVariableBookkeeping_ != nullptr )
         {
             if( dependentVariableBookkeeping_->getObservableType( ) != observableType_ )
@@ -146,12 +143,6 @@ public:
 
         // Sort observations and metadata per observation time
         orderObservationsAndMetadata( );
-
-        // Erase duplicate observations if requested
-        if (eraseDuplicates) {
-            std::cout << "[OBS CC] Erasing bool active" << std::endl;
-            eraseDuplicateObservations( );
-        } else{std::cout << "[OBS CC] Erasing bool inactive" << std::endl;}
 
         // Initialise time bounds
         updateTimeBounds( );
@@ -704,40 +695,6 @@ public:
             counter += 1;
         }
     }
-
-
-    void eraseDuplicateObservations()
-    {
-        std::vector<unsigned int> indicesToRemove;
-
-        // Single pass through sorted observations
-        for(unsigned int i = 1; i < numberOfObservations_; i++)
-        {
-            // Check if current observation time equals previous observation time
-            if(observationTimes_[i] == observationTimes_[i-1])
-            {
-                // Check if observation values are also identical
-                if(observations_[i].isApprox(observations_[i-1]))
-                {
-                    // Mark current observation for removal
-                    indicesToRemove.push_back(i);
-                }
-            }
-        }
-
-        // Remove duplicates if any were found
-        if(indicesToRemove.size() > 0)
-        {
-            int beforeCount = numberOfObservations_;
-            removeObservations(indicesToRemove);
-            std::cout << "[OBS CC] Removed " << beforeCount - numberOfObservations_ << "duplicates." << std::endl;
-        }
-        else{std::cout << "[OBS CC] Did not identify any duplicates" << std::endl;}
-
-        // numberOfObservations_( observations_.size( ) )
-    }
-
-
 
     void filterObservations( const std::shared_ptr< ObservationFilterBase > observationFilter, const bool saveFilteredObservations = true )
     {

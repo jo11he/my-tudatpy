@@ -1251,8 +1251,7 @@ template< typename ObservationScalarType = double, typename TimeType = Time >
 std::shared_ptr< observation_models::ObservationCollection< ObservationScalarType, TimeType > > createOdfObservedObservationCollection(
         std::shared_ptr< ProcessedOdfFileContents< TimeType > > processedOdfFileContents,
         std::vector< observation_models::ObservableType > observableTypesToProcess = std::vector< observation_models::ObservableType >( ),
-        std::pair< TimeType, TimeType > startAndEndTimesToProcess = std::make_pair< TimeType, TimeType >( TUDAT_NAN, TUDAT_NAN ),
-        const bool allowDuplicateObservationsWithinSingleObservationSet = false)
+        std::pair< TimeType, TimeType > startAndEndTimesToProcess = std::make_pair< TimeType, TimeType >( TUDAT_NAN, TUDAT_NAN ) )
 {
     // Set observables to process
     if( observableTypesToProcess.empty( ) )
@@ -1341,9 +1340,7 @@ std::shared_ptr< observation_models::ObservationCollection< ObservationScalarTyp
                                 std::vector< Eigen::VectorXd >( ),
                                 nullptr,
                                 std::make_shared< observation_models::ObservationAncillarySimulationSettings >(
-                                        ancillarySettings.at( i ) ),
-                                !allowDuplicateObservationsWithinSingleObservationSet) );
-
+                                        ancillarySettings.at( i ) ) ) );
             }
         }
     }
@@ -1568,8 +1565,7 @@ createOdfObservedObservationCollectionFromFile( simulation_setup::SystemOfBodies
                                                 const std::string& targetName,
                                                 const bool verboseOutput = true,
                                                 const std::map< std::string, Eigen::Vector3d >& earthFixedGroundStationPositions =
-                                                        simulation_setup::getApproximateDsnGroundStationPositions( ),
-                                                const bool allowDuplicateObservationsWithinSingleObservationSet = false)
+                                                        simulation_setup::getApproximateDsnGroundStationPositions( ) )
 {
     std::vector< std::shared_ptr< input_output::OdfRawFileContents > > rawOdfDataVector;
     for( std::string odfFileName : odfFileNames )
@@ -1583,10 +1579,7 @@ createOdfObservedObservationCollectionFromFile( simulation_setup::SystemOfBodies
     observation_models::setOdfInformationInBodies( processedOdfFileContents, bodies );
 
     // Create observed observation collection
-    return observation_models::createOdfObservedObservationCollection< ObservationScalarType, TimeType >(
-        processedOdfFileContents, std::vector< observation_models::ObservableType >(),
-        std::make_pair< TimeType, TimeType >( TUDAT_NAN, TUDAT_NAN ),
-        allowDuplicateObservationsWithinSingleObservationSet);
+    return observation_models::createOdfObservedObservationCollection< ObservationScalarType, TimeType >( processedOdfFileContents );
 }
 
 }  // namespace observation_models
