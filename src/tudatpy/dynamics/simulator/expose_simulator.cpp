@@ -701,6 +701,49 @@ void expose_simulator( py::module& m )
          :type: :class:`~tudatpy.dynamics.simulator.SingleArcSimulator`
       )doc" );
 
+
+    py::class_< tp::MultiArcVariationalEquationsSolver< STATE_SCALAR_TYPE, TIME_TYPE >,
+                std::shared_ptr< tp::MultiArcVariationalEquationsSolver< STATE_SCALAR_TYPE, TIME_TYPE > >,
+                tp::VariationalEquationsSolver< STATE_SCALAR_TYPE, TIME_TYPE > >( m,
+                                                                                  "MultiArcVariationalEquationsSolver",
+                                                                                  R"doc(
+
+         Class for multi arc variational equations propagation.
+
+      )doc" )
+
+    .def( "integrate_full_equations",
+          &tp::MultiArcVariationalEquationsSolver< STATE_SCALAR_TYPE, TIME_TYPE >::integrateVariationalAndDynamicalEquations,
+          py::arg( "initial_states" ),
+          py::arg( "integrate_equations_concurrently" ) = true,
+          R"doc(
+
+         Function to trigger the integration of variational and dynamical equations (equations of motion).
+
+
+         Function to trigger the integration of the (regular) equations of motion as well as the variational equations,
+         solving for `state_history` and `variational_equations_history`
+         (in its two components `state_transition_matrix_history` & `sensitivity_matrix_history`).
+
+
+         Parameters
+         ----------
+         initial_states : numpy.ndarray([m, 1])
+             Initial state to be used for the parameters in the equations of motion.
+
+         integrate_equations_concurrently : bool, default = True
+             Boolean defining whether equations of motion and variational equations are to be propagated concurrently
+             (if true) or sequentially (of false).
+
+         Returns
+         -------
+         None
+             Creates / modifies the properties of the VariationalSolver object
+
+     )doc" );
+
+
+
     m.def( "create_variational_equations_solver",
            &tss::createVariationalEquationsSolver< STATE_SCALAR_TYPE, TIME_TYPE >,
            py::arg( "bodies" ),
