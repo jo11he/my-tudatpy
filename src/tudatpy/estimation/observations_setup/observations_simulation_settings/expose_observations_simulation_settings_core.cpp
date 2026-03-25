@@ -376,6 +376,14 @@ void expose_observation_simulation_settings_core_bindings( py::module& m )
 
      )doc" );
 
+
+    m.def( "reset_noise_seed",
+            &tss::resetNoiseSeed,
+            py::arg("new_noise_seed"),
+            R"doc(
+    Function for manually setting the random seed on which observation noise simulations are based.
+            )doc" );
+
 }
 
 }  // namespace observations_simulation_settings
