@@ -93,7 +93,17 @@ public:
         }
 
         singleObservationSize_ = getObservableSize( observableType );
-
+        if( getObservableSize( observableType ) > 0 && !observations_.empty( ) )
+        {
+            if( static_cast< unsigned int >( observations_.at( 0 ).rows( ) ) != singleObservationSize_ )
+            {
+                throw std::runtime_error( "Error when making SingleObservationSet, input observable size (" +
+                                          std::to_string( observations_.at( 0 ).rows( ) ) +
+                                          ") is inconsistent with observable type " +
+                                          getObservableName( observableType ) + " (expected size " +
+                                          std::to_string( singleObservationSize_ ) + ")." );
+            }
+        }
         // Initialise weights
         if( weights.size( ) == 0 )
         {
@@ -716,8 +726,12 @@ public:
             // Check if current observation time equals previous observation time
             if(observationTimes_[i] == observationTimes_[i-1])
             {
-                // Check if observation values are also identical
-                if(observations_[i].isApprox(observations_[i-1]))
+                const double currentObsValue = observationTimes_[i];
+                const double previousObsValue = observationTimes_[i-1];
+
+                // Check if observation values are also identical (with relative tolerance)
+                if (std::abs(currentObsValue - previousObsValue)
+                    <= 1e-12 * std::max(std::abs(currentObsValue), std::abs(previousObsValue)))
                 {
                     // Mark current observation for removal
                     indicesToRemove.push_back(i);

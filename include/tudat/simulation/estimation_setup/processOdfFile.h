@@ -24,6 +24,7 @@
 #include "tudat/math/interpolators/lookupScheme.h"
 #include "tudat/math/quadrature/trapezoidQuadrature.h"
 #include "tudat/simulation/environment_setup/body.h"
+#include "tudat/simulation/environment_setup/defaultGroundStationSettings.h"
 #include "tudat/simulation/estimation_setup/observationSimulationSettings.h"
 #include "tudat/simulation/estimation_setup/observationCollection.h"
 
@@ -1252,7 +1253,7 @@ std::shared_ptr< observation_models::ObservationCollection< ObservationScalarTyp
         std::shared_ptr< ProcessedOdfFileContents< TimeType > > processedOdfFileContents,
         std::vector< observation_models::ObservableType > observableTypesToProcess = std::vector< observation_models::ObservableType >( ),
         std::pair< TimeType, TimeType > startAndEndTimesToProcess = std::make_pair< TimeType, TimeType >( TUDAT_NAN, TUDAT_NAN ),
-        const bool allowDuplicateObservationsWithinSingleObservationSet = false)
+        const bool allowDuplicateObservationsWithinSingleObservationSet = true)
 {
     // Set observables to process
     if( observableTypesToProcess.empty( ) )
@@ -1571,7 +1572,7 @@ createOdfObservedObservationCollectionFromFile( simulation_setup::SystemOfBodies
                                                 const bool verboseOutput = true,
                                                 const std::map< std::string, Eigen::Vector3d >& earthFixedGroundStationPositions =
                                                         simulation_setup::getApproximateDsnGroundStationPositions( ),
-                                                const bool allowDuplicateObservationsWithinSingleObservationSet = false)
+                                                const bool allowDuplicateObservationsWithinSingleObservationSet = true)
 {
     std::vector< std::shared_ptr< input_output::OdfRawFileContents > > rawOdfDataVector;
     for( std::string odfFileName : odfFileNames )
