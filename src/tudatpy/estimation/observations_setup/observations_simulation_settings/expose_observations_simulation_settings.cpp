@@ -153,7 +153,11 @@ void expose_observations_simulation_settings( py::module& m )
       )doc" )
             .def_property( "simulation_times",
                            &tss::TabulatedObservationSimulationSettings< TIME_TYPE >::getSimulationTimes,
-                           &tss::TabulatedObservationSimulationSettings< TIME_TYPE >::setSimulationTimes );
+                           &tss::TabulatedObservationSimulationSettings< TIME_TYPE >::setSimulationTimes )
+
+            .def("__copy__", [](const std::shared_ptr<tss::TabulatedObservationSimulationSettings<TIME_TYPE>>& self) {
+                return std::make_shared<tss::TabulatedObservationSimulationSettings<TIME_TYPE>>(*self);
+            });
 
     m.def( "tabulated_simulation_settings",
            &tss::tabulatedObservationSimulationSettings< TIME_TYPE >,
