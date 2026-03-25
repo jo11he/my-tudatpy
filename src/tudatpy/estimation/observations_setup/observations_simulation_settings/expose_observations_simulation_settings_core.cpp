@@ -62,6 +62,14 @@ void expose_observation_simulation_settings_core_bindings( py::module& m )
                            &tss::ObservationSimulationSettings< TIME_TYPE >::setAncillarySettings,
                            R"doc( No documentation found
       )doc" )
+
+
+            .def_property_readonly( "link_ends",
+                            &tss::ObservationSimulationSettings< TIME_TYPE >::getLinkEnds,
+                            R"doc( Read-only property LinkEnds in ObservationSimulationSettings object.
+      )doc" )
+
+
             .def_property_readonly( "dependent_variable_bookkeeping",
                                     &tss::ObservationSimulationSettings< TIME_TYPE >::getObservationDependentVariableBookkeeping,
                                     R"doc( No documentation found
