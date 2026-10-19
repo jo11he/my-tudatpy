@@ -25,6 +25,7 @@
 #include "tudat/interface/spice/spiceInterface.h"
 #include "tudat/io/basicInputOutput.h"
 #include "tudat/astro/basic_astro/celestialBodyConstants.h"
+#include "tudat/astro/reference_frames/referenceFrameTransformations.h"
 
 namespace tudat
 {
