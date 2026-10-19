@@ -128,6 +128,10 @@ void expose_parameters_setup_types( py::module& m )
             .value( "rotation_pole_position_type",
                     tep::EstimatebleParametersEnum::rotation_pole_position,
                     R"doc(Estimatable parameter for rotation pole position.)doc" )
+            .value("iau_rotation_pole_position_type", tep::EstimatebleParametersEnum::nominal_rotation_pole_position)
+            .value("iau_rotation_pole_position_rate_type", tep::EstimatebleParametersEnum::rotation_pole_position_rate)
+            .value("iau_rotation_pole_libration_terms_type", tep::EstimatebleParametersEnum::rotation_pole_libration_terms)
+            .value("iau_rotation_longitudinal_libration_terms_type", tep::EstimatebleParametersEnum::rotation_longitudinal_libration_terms)
             .value( "constant_additive_observation_bias_type",
                     tep::EstimatebleParametersEnum::constant_additive_observation_bias,
                     R"doc(Estimatable parameter for constant additive observation bias.)doc" )
@@ -152,6 +156,8 @@ void expose_parameters_setup_types( py::module& m )
             .value( "ground_station_position_type",
                     tep::EstimatebleParametersEnum::ground_station_position,
                     R"doc(Estimatable parameter for ground station position.)doc" )
+            .value( "reference_point_position_type", tep::EstimatebleParametersEnum::reference_point_position,
+                    R"doc(Estimatable parameter for reference point position.)doc" )
             .value( "equivalence_principle_lpi_violation_parameter_type",
                     tep::EstimatebleParametersEnum::equivalence_principle_lpi_violation_parameter,
                     R"doc(Estimatable parameter for equivalence principle lpi violation parameter.)doc" )
