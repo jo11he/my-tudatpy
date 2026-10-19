@@ -67,6 +67,14 @@ void expose_observation_simulation_settings_core_bindings( py::module& m )
          :type: ObservationAncillarySimulationSettings
 
       )doc" )
+
+
+            .def_property_readonly( "link_ends",
+                            &tss::ObservationSimulationSettings< TIME_TYPE >::getLinkEnds,
+                            R"doc( Read-only property LinkEnds in ObservationSimulationSettings object.
+      )doc" )
+
+
             .def_property_readonly( "dependent_variable_bookkeeping",
                                     &tss::ObservationSimulationSettings< TIME_TYPE >::getObservationDependentVariableBookkeeping,
                                     R"doc(
@@ -181,7 +189,12 @@ void expose_observation_simulation_settings_core_bindings( py::module& m )
 
          :type: list[Time]
 
-      )doc" );
+      )doc" )
+
+            // allows deepcopy of the python object.
+            .def("__copy__", [](const std::shared_ptr<tss::TabulatedObservationSimulationSettings<TIME_TYPE>>& self) {
+                     return std::make_shared<tss::TabulatedObservationSimulationSettings<TIME_TYPE>>(*self);
+                 });
 
     m.def( "tabulated_simulation_settings",
            &tss::tabulatedObservationSimulationSettings< TIME_TYPE >,
@@ -404,6 +417,15 @@ void expose_observation_simulation_settings_core_bindings( py::module& m )
 
 
      )doc" );
+
+
+    m.def( "reset_noise_seed",
+            &tss::resetNoiseSeed,
+            py::arg("new_noise_seed"),
+            R"doc(
+    Function for manually setting the random seed on which observation noise simulations are based.
+            )doc" );
+
 }
 
 }  // namespace observations_simulation_settings
