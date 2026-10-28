@@ -492,8 +492,9 @@ true. The measurements are interpolated (using ``interpolator_settings``) at tim
 ``maximum_interpolation_gap``. Outside of the measurements (and for ground stations without measurements), the fallback correction
 is used.
 
-Note that an (integrated) Doppler observable for which the correction switches between measurements and fallback correction may
-contain an error due to the difference between the two.
+For DSN averaged Doppler observables, the fallback correction is used for a leg (uplink or downlink) at both the start and end of
+the integration time if the measurements are available at only one of the two. For other integrated observables, a switch between
+measurements and fallback correction may cause an error due to the difference between the two.
 
 Parameters
 ----------
@@ -505,7 +506,8 @@ fallback_settings : LightTimeCorrectionSettings
 maximum_interpolation_gap : float
     Maximum interval [s] between two measurements over which they are interpolated.
 use_measured_dry_delay : bool, default = False
-    Boolean denoting whether the measured dry path delay replaces that of the fallback correction.
+    Boolean denoting whether the measured dry path delay replaces that of the fallback correction. If true, measurements with NaN
+    dry path delay are skipped.
 body_with_atmosphere_name : str, default = "Earth"
     Name of the body with the atmosphere.
 mapping_model : TroposphericMappingModel, default = niell

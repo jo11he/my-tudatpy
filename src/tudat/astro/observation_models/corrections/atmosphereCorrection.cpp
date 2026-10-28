@@ -30,10 +30,17 @@ MeasuredTroposphericCorrection::MeasuredTroposphericCorrection(
         const double maximumInterpolationGap,
         const bool useMeasuredDryDelay,
         const std::shared_ptr< interpolators::InterpolatorSettings > interpolatorSettings ):
-    MappedTroposphericCorrection( measured_tropospheric, elevationMapping, isUplinkCorrection ), zenithDelays_( zenithDelays ),
-    fallbackCorrection_( fallbackCorrection ), maximumInterpolationGap_( maximumInterpolationGap ),
-    useMeasuredDryDelay_( useMeasuredDryDelay )
+    MappedTroposphericCorrection( measured_tropospheric, elevationMapping, isUplinkCorrection ), fallbackCorrection_( fallbackCorrection ),
+    maximumInterpolationGap_( maximumInterpolationGap ), useMeasuredDryDelay_( useMeasuredDryDelay )
 {
+    // If the measured dry delay is used, skip measurements without valid (NaN) dry delay
+    for( const auto& [ time, zenithDelay ] : zenithDelays )
+    {
+        if( !useMeasuredDryDelay_ || !std::isnan( zenithDelay( 0 ) ) )
+        {
+            zenithDelays_[ time ] = zenithDelay;
+        }
+    }
     if( zenithDelays_.size( ) < 2 )
     {
         throw std::runtime_error( "Error when creating measured tropospheric correction, at least two measurements are required" );
@@ -58,7 +65,12 @@ bool MeasuredTroposphericCorrection::isMeasurementAvailable( const double time )
 
 double MeasuredTroposphericCorrection::computeZenithCorrection( const double stationTime, const int component )
 {
-    if( ( component == 1 || useMeasuredDryDelay_ ) && isMeasurementAvailable( stationTime ) )
+    const bool useMeasurement = !forceFallback_ && isMeasurementAvailable( stationTime );
+    if( component == 1 )
+    {
+        isFallbackUsed_ = !useMeasurement;
+    }
+    if( ( component == 1 || useMeasuredDryDelay_ ) && useMeasurement )
     {
         return interpolator_->interpolate( stationTime )( component );
     }
